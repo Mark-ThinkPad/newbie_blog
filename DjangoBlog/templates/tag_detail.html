@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% block css %}
+{% endblock %}
+
+{% block fill %}
+<div class="card hoverable">
+    <div class="card-content">
+        <div class="card-title">标签 {{ t.tag }}</div>
+        <div class="collection">
+            {% for a in articles %}
+            <a class="collection-item waves-effect waves-light" href={% url "article_detail" a.year a.month a.day a.url_suffix %}>
+                <time>{{ a.year }}-{{ a.month }}-{{ a.day }}</time>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;{{ a.title }}</span>
+            </a>
+            {% empty %}
+            <a class="collection-item waves-effect waves-light">此标签目前还没有文章哦~</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

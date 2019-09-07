@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+
+{% block fill %}
+<div class="card hoverable">
+    <div class="markdown-body editormd-html-preview">
+        <h1>{{ a.title }}</h1>
+        <p>
+            <i class="fa fa-calendar fa-emoji" title="release date"></i>
+            <code><time class="blue-grey-text text-darken-4">{{ a.year }}-{{ a.month }}-{{ a.day }}</time></code>
+            <i class="fa fa-user fa-emoji" title="author"></i>
+            <code>
+                {% for au in a.author.all %}
+                <a class="blue-grey-text text-darken-4" href={% url "author_detail" au.author %}>{{ au.author }}</a>
+                {% empty %}
+                <span>作者未注明</span>
+                {% endfor %}
+            </code>
+            <i class="fa fa-bookmark fa-emoji" title="categories"></i>
+            <code>
+                {% for c in a.categories.all %}
+                <a class="blue-grey-text text-darken-4" href={% url "category_detail" c.category %}>{{ c.category }}</a>
+                {% empty %}
+                <span>未设置分类</span>
+                {% endfor %}
+            </code>
+            <i class="fa fa-tags fa-emoji" title="tags"></i>
+            <code>
+                {% for t in a.tags.all %}
+                <a class="blue-grey-text text-darken-4" href={% url "tag_detail" t.tag %}>{{ t.tag }}</a>
+                {% empty %}
+                <span>未设置标签</span>
+                {% endfor %}
+            </code>
+            <i class="fa fa-eye fa-emoji" title="click volume"></i>
+            <code>{{ a.click }}</code>
+            {% if request.user.is_authenticated %}
+            <span>&nbsp;</span>
+            <i class="fa fa-download fa-emoji" title="download"></i>
+            <a class="blue-text" href="{{ a.md_file.url }}" download="{{ a.url_suffix }}.md">下载文档</a>
+            <span>&nbsp;</span>
+            <i class="fa fa-pencil-square-o fa-emoji" title="edit"></i>
+            <a class="blue-text" target="_blank" rel="noopener norefferrer" href={% url "edit" a.year a.month a.day a.url_suffix %}>编辑文章</a>
+            {% endif %}
+        </p>
+        <hr></hr>
+        <div id="preview"></div>
+        <p>
+            <i class="fa fa-pencil fa-emoji" title="last edit time"></i>
+            <code class="blue-grey-text text-darken-4">本文最后编辑时间:{{ a.edited_time|date:"Y-m-d" }}</code>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/editor.md/lib/marked.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/prettify.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/raphael.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/underscore.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/sequence-diagram.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/flowchart.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/lib/jquery.flowchart.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/editor.md/editormd.min.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+    $.get('{{ a.md_file.url }}', function (md) {
+        let preview = editormd.markdownToHTML('preview', {
+            markdown: md,
+            htmlDecode: "style,script,iframe",
+            tocm: true,
+            tocTitle: 'Content',
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+        });
+    });
+</script>
+{% endblock %}

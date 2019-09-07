@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block css %}
+<!--Import Editor.md CSS-->
+<link rel="stylesheet" href="/static/editor.md/css/editormd.min.css">
+{% endblock %}
+
+{% block fill %}
+<div class="card hoverable">
+    <div class="card-content">
+        <div class="card-title">{{ a.title }}</div>
+        <div class="markdown-body editormd-html-preview">
+            {% if request.user.is_authenticated %}
+            <p>
+                <i class="fa fa-eye fa-emoji" title="click volume"></i>
+                <code>{{ a.click }}</code>
+                <i class="fa fa-download fa-emoji" title="download"></i>
+                <a class="blue-text" href="{{ a.md_file.url }}" download="{{ a.url_suffix }}.md">下载文档</a>
+                <span>&nbsp;</span>
+                <i class="fa fa-pencil-square-o fa-emoji" title="edit"></i>
+                <a class="blue-text" target="_blank" rel="noopener norefferrer" href={% url "edit" a.year a.month a.day a.url_suffix %}>编辑文章</a>
+            </p>
+            {% endif %}
+            <hr></hr>
+            {{ a.getHTML }}
+        </div>
+        <div class="collection">
+            {% for a in articles %}
+            <a class="collection-item waves-effect waves-light" href={% url "article_detail" a.year a.month a.day a.url_suffix %}>
+                <time>{{ a.year }}-{{ a.month }}-{{ a.day }}</time>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;{{ a.title }}</span>
+            </a>
+            {% empty %}
+            <a class="collection-item waves-effect waves-light">还没有上传相关文章哦~</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

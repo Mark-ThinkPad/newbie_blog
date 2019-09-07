@@ -1,0 +1,63 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+main {
+    flex: 1 0 auto;
+    background-color: RGBA(239, 239, 239, 1);
+}
+#to-top,
+#admin-menu {
+  margin-bottom: 36px;
+}
+#login-card,
+#upload-image-card,
+#article-editor,
+#framework,
+#show-images {
+    margin-top: 16px;
+}
+#editor-input {
+    display: none;
+}
+.markdown-body li > input[type='checkbox'] {
+    position: unset;
+    opacity: unset;
+    pointer-events: unset;
+}
+ul.markdown-toc-list > li {
+    list-style-type: disc !important;
+}
+.markdown-body ul:not(.browser-default) {
+    list-style-type: unset;
+}
+.markdown-body ul > li {
+    list-style-type: unset;
+}
+.markdown-body ul ul > li {
+    list-style-type: circle;
+}
+.markdown-body ul ul ul > li {
+    list-style-type: square;
+}
+.markdown-body ol ol > li,
+.markdown-body ul ol > li {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol > li,
+.markdown-body ul ol ol > li,
+.markdown-body ol ul ol > li,
+.markdown-body ol ol ol > li {
+  list-style-type: lower-alpha;
+}
+#add-article {
+    margin-top: 32px;
+}
+article {
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    max-height: 32em;
+}

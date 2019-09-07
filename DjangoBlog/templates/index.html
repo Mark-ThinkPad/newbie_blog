@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block css %}
+<!--Import FontAwesome Icon-->
+<link href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!--Import Editor.md CSS-->
+<link rel="stylesheet" href="/static/editor.md/css/editormd.min.css">
+{% endblock %}
+
+{% block main %}
+<div class="container" id="framework">
+    <div class="row">
+        <div class="col s12 l9">
+        {% block fill %}
+        {% if content.number == 1 %}
+        {% for at in articles_top %}
+        <div class="card hoverable">
+            <div class="card-content">
+                <div class="card-title">
+                    <a class="grey-text text-darken-3" href={% url "article_detail" at.year at.month at.day at.url_suffix %}>
+                        {{ at.title }}
+                    </a>
+                </div>
+                <p>
+                    <button class="btn-small waves-effect waves-light">
+                        <i class="fa fa-calendar fa-emoji" title="release date"></i>
+                        <time>{{ at.year }}-{{ at.month }}-{{ at.day }}</time>
+                    </button>
+                    <span>
+                        {% for au in at.author.all %}
+                        <a class="btn-small waves-effect waves-light" href={% url "author_detail" au.author %}>
+                            <i class="fa fa-user fa-emoji" title="author"></i>
+                            <span>{{ au.author }}</span>
+                        </a>
+                        {% empty %}
+                        <button class="btn-small waves-effect waves-light">
+                            <i class="fa fa-user fa-emoji" title="author"></i>
+                            <span>作者未注明</span>
+                        </button>
+                        {% endfor %}
+                    </span>
+                    <span>
+                        {% for c in at.categories.all %}
+                        <a class="btn-small waves-effect waves-light" href={% url "category_detail" c.category %}>
+                            <i class="fa fa-bookmark fa-emoji" title="category"></i>
+                            <span>{{ c.category }}</span>
+                        </a>
+                        {% empty %}
+                        <button class="btn-small waves-effect waves-light">
+                            <i class="fa fa-bookmark fa-emoji" title="category"></i>
+                            <span>未设置分类</span>
+                        </button>
+                        {% endfor %}
+                    </span>
+                    <button class="btn-small waves-effect waves-light">
+                        <i class="fa fa-angle-double-up fa-emoji" title="top"></i>
+                        <span>置顶</span>
+                    </button>
+                </p>
+                <div class="markdown-body editormd-html-preview">
+                     <article>{{ at.getHTML }}</article>
+                    <hr></hr>
+                </div>
+                <a class="btn-small waves-effect waves-light" href={% url "article_detail" at.year at.month at.day at.url_suffix %}>
+                    <i class="fa fa-hand-o-right fa-emoji" title="Read more"></i>
+                    <span>阅读全文</span>
+                </a>
+                {% if request.user.is_authenticated %}
+                <a class="btn-small waves-effect waves-light" href="{{ at.md_file.url }}" download="{{ at.url_suffix }}.md">
+                    <i class="fa fa-download fa-emoji" title="download"></i>
+                    <span>下载文档</span>
+                </a>
+                <a class="btn-small waves-effect waves-light" target="_blank" rel="noopener norefferrer" href={% url "edit" at.year at.month at.day at.url_suffix %}>
+                    <i class="fa fa-pencil-square-o fa-emoji" title="edit"></i>
+                    <span>编辑文章</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        {% endfor %}
+        {% endif %}
+
+        {% for a in content %}
+        <div class="card hoverable">
+            <div class="card-content">
+                <div class="card-title">
+                    <a class="grey-text text-darken-3" href={% url "article_detail" a.year a.month a.day a.url_suffix %}>
+                        {{ a.title }}
+                    </a>
+                </div>
+                <p>
+                    <button class="btn-small waves-effect waves-light">
+                        <i class="fa fa-calendar fa-emoji" title="release date"></i>
+                        <time>{{ a.year }}-{{ a.month }}-{{ a.day }}</time>
+                    </button>
+                    <span>
+                        {% for au in a.author.all %}
+                        <a class="btn-small waves-effect waves-light" href={% url "author_detail" au.author %}>
+                            <i class="fa fa-user fa-emoji" title="author"></i>
+                            <span>{{ au.author }}</span>
+                        </a>
+                        {% empty %}
+                        <button class="btn-small waves-effect waves-light">
+                            <i class="fa fa-user fa-emoji" title="author"></i>
+                            <span>作者未注明</span>
+                        </button>
+                        {% endfor %}
+                    </span>
+                    <span>
+                        {% for c in a.categories.all %}
+                        <a class="btn-small waves-effect waves-light" href={% url "category_detail" c.category %}>
+                            <i class="fa fa-bookmark fa-emoji" title="category"></i>
+                            <span>{{ c.category }}</span>
+                        </a>
+                        {% empty %}
+                        <button class="btn-small waves-effect waves-light">
+                            <i class="fa fa-bookmark fa-emoji" title="category"></i>
+                            <span>未设置分类</span>
+                        </button>
+                        {% endfor %}
+                    </span>
+                </p>
+                <div class="markdown-body editormd-html-preview">
+                     <article>{{ a.getHTML }}</article>
+                    <hr></hr>
+                </div>
+                <a class="btn-small waves-effect waves-light" href={% url "article_detail" a.year a.month a.day a.url_suffix %}>
+                    <i class="fa fa-hand-o-right fa-emoji" title="Read more"></i>
+                    <span>阅读全文</span>
+                </a>
+                {% if request.user.is_authenticated %}
+                <a class="btn-small waves-effect waves-light" href="{{ a.md_file.url }}" download="{{ a.url_suffix }}.md">
+                    <i class="fa fa-download fa-emoji" title="download"></i>
+                    <span>下载文档</span>
+                </a>
+                <a class="btn-small waves-effect waves-light" target="_blank" rel="noopener norefferrer" href={% url "edit" a.year a.month a.day a.url_suffix %}>
+                    <i class="fa fa-pencil-square-o fa-emoji" title="edit"></i>
+                    <span>编辑文章</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        {% endfor %}
+
+        <ul class="pagination center">
+           {% if content.has_previous %}
+            <li class="waves-effect">
+                <a href="?page={{ content.previous_page_number }}">
+                    <i class="material-icons">chevron_left</i>
+                </a>
+            </li>
+            {% else %}
+            <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            <li class="waves-effect">
+                <a href="?page={{ content.number }}">{{ content.number }}</a>
+                <span> / </span>
+                <a href="?page={{ content.paginator.num_pages }}">{{ content.paginator.num_pages }}</a>
+            </li>
+            {% if content.has_next %}
+            <li class="waves-effect">
+                <a href="?page={{ content.next_page_number }}">
+                    <i class="material-icons">chevron_right</i>
+                </a>
+            </li>
+            {% else %}
+            <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
+        {% endblock %}
+        </div>
+        <div class="col s12 l3">
+            <div class="card hoverable">
+                <div class="card-image">
+                    <img src="/media/avatar/avatar2.jpg">
+                </div>
+                <div class="card-content">
+                    <div class="card-title center">Your blog name</div>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-panel teal lighten-5">
+                    <span>Your blog introduce</span>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <a class="white-text" href="/authors/">作者列表</a>
+                </div>
+                <div class="card-content">
+                    <div class="collection">
+                        {% for author in author_list %}
+                        <a class="collection-item waves-effect waves-light" href={% url "author_detail" author.author %}>
+                            {{ author.author }}
+                        </a>
+                        {% empty %}
+                        <a class="collection-item waves-effect waves-light">诶?!作者都不见了</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <a class="white-text" href="/categories/">文章分类</a>
+                </div>
+                <div class="card-content">
+                    <div class="collection">
+                        {% for category in category_list %}
+                        <a class="collection-item waves-effect waves-light" href={% url "category_detail" category.category %}>
+                            {{ category.category }}
+                        </a>
+                        {% empty %}
+                        <a class="collection-item waves-effect waves-light">暂无分类</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <a class="white-text" href="/tags/">所有标签</a>
+                </div>
+                <div class="card-content">
+                    <div class="collection">
+                        {% for tag in tag_list %}
+                        <a class="collection-item waves-effect waves-light" href={% url "tag_detail" tag.tag %}>
+                            {{ tag.tag }}
+                        </a>
+                        {% empty %}
+                        <a class="collection-item waves-effect waves-light">暂无标签</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <span class="white-text">精选项目</span>
+                </div>
+                <div class="card-content">
+                   <div class="collection">
+                       {% for project in projects %}
+                       <a class="collection-item waves-effect waves-light" href="{{ project.url }}" target="_blank" rel="noopener norefferrer">
+                            {{ project.name }}
+                       </a>
+                       {% empty %}
+                       <a class="collection-item waves-effect waves-light">暂无精选项目</a>
+                       {% endfor %}
+                   </div>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <span class="white-text">友情链接</span>
+                </div>
+                <div class="card-content">
+                    <ul class="collection">
+                        {% for friend in friends %}
+                        <li class="collection-item avatar">
+                            <img src="{{ friend.avatar }}" class="circle">
+                            <span class="title">
+                                <a class="grey-text text-darken-3" href="{{ friend.url }}" target="_blank" rel="noopener norefferrer">{{ friend.name }}</a>
+                            </span>
+                            <p>
+                                <a class="grey-text text-darken-3" href="{{ friend.url }}" target="_blank" rel="noopener norefferrer">{{ friend.url }}</a>
+                            </p>
+                        </li>
+                        {% empty %}
+                        <li class="collection-item">目前还没有友链哦~</li>
+                        {% endfor %}
+                        <li class="collection-item avatar">
+                            <i class="material-icons circle teal lighten-2">email</i>
+                            <span class="title">
+                                <a href="mailto:1372469698@qq.com?subject=交换友链&body=你好，我想和你交换友链，我已经将【码客笔记】添加至我的博客的友链中。我的博客链接和头像链接是：">
+                                    <span class="grey-text text-darken-3">交换友链</span>
+                                </a>
+                            </span>
+                            <p>
+                                <a href="mailto:1372469698@qq.com?subject=交换友链&body=你好，我想和你交换友链，我已经将【码客笔记】添加至我的博客的友链中。我的博客链接和头像链接是：">
+                                    <span class="grey-text text-darken-3">Click here</span>
+                                </a>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card hoverable">
+                <div class="card-title center teal lighten-2">
+                    <span class="white-text">推荐歌单</span>
+                </div>
+                <div class="video-container" style="height: 450px;">
+                    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 src="//music.163.com/outchain/player?type=0&id=2945119589&auto=0&height=430"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

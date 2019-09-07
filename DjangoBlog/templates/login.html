@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col s12 m8 offset-m2 l6 offset-l3 xl4 offset-xl4">
+            <div class="card hoverable" id="login-card">
+                <div class="card-title center teal lighten-1">管理员登录</div>
+                <div class="card-content">
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="username" type="text" class="validate" maxlength="10" data-length="10">
+                                    <label class="active" for="username">用户名</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="password" type="password" class="validate" maxlength="20" data-length="20">
+                                    <label class="active" for="password">密码</label>
+                                </div>
+                            </div>
+                            <div class="center">
+                                <button type="button" class="waves-effect waves-light btn" id="login-button" disabled>登录</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+        <h5 id="message-title">还没登录呢</h5>
+        <p id="message-words">请问您是怎么打开这个弹窗的</p>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat" id="message-confirm">哦吼</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/login.js" charset="UTF-8"></script>
+{% endblock %}

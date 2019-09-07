@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <div class="card hoverable" id="upload-image-card">
+                <div class="card-title center teal lighten-1">上传图片</div>
+                <div class="card-content">
+                    <form action="#">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>图片</span>
+                                <input id="images" type="file" accept=".png, .jpg, .jpeg, .gif, .ico" multiple>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="支持多张图片同时上传">
+                            </div>
+                        </div>
+                        <div class="input-field center">
+                            <button type="button" class="waves-effect waves-light btn" id="add-images" disabled>
+                                <i class="material-icons left">cloud_upload</i>上传图片
+                            </button>
+                            <button type="reset" class="waves-effect waves-light btn" id="reset-button" disabled>
+                                <i class="material-icons left">refresh</i>重置
+                            </button>
+                        </div>
+                        <div class="card-image" id="images-preview"></div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/add_image.js" charset="UTF-8"></script>
+{% endblock %}

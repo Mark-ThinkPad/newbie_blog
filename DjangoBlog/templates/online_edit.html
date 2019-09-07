@@ -1,0 +1,70 @@
+{% extends "add_article.html" %}
+{% block custom %}
+<script type="text/javascript" charset="UTF-8">
+    $.get('{{ a.md_file.url }}', function (md) {
+        // 编辑器
+        let editor = editormd('article-editor', {
+            path: '/static/editor.md/lib/',
+            markdown: md,
+            height: 800,
+            htmlDecode: "style,script,iframe|on*",
+            toolbarIcons: 'simple',
+            tocm: true,
+            tocTitle: 'Content',
+            taskList: true,
+            tex: true,
+            flowChart: true,
+            sequenceDiagram: true,
+            saveHTMLToTextarea: true,
+        });
+        editor.on('change', function () {
+            let md_code = $('#editor-input').val();
+            let md_file = $('#md-file').val();
+            let url_suffix = $('#url_suffix').val();
+            let title = $('#title').val();
+            let authors = $('#authors').val();
+            let tags = $('#tags').val();
+            let categories = $('#categories').val();
+
+            if (md_code || md_file) {
+                if (md_code && md_file) {
+                    alert('在线编辑器和本地md文档只能选择一个哦~');
+                    $('#add-article').attr('disabled', true);
+                } else if (url_suffix && title && authors.length > 0 && tags.length > 0 && categories.length > 0) {
+                    $('#add-article').attr('disabled', false);
+                } else {
+                    $('#add-article').attr('disabled', true);
+                }
+            } else {
+                $('#add-article').attr('disabled', true);
+            }
+        });
+        // 还原url后缀, 标题和置顶状态
+        $('#url_suffix').val('{{ a.url_suffix }}').attr('disabled', true);
+        $('#title').val('{{ a.title }}');
+        M.updateTextFields();
+        {% if a.top %}
+        $('#top').prop('checked', true);
+        {% else %}
+        $('#top').prop('checked', false);
+        {% endif %}
+        // 还原已选作者&标签&分类
+        let selector_au = '';
+        {% for au in a.author.all %}
+        selector_au = 'select' + '#authors' + ' option[value="' + '{{ au.author }}' + '"]';
+        $(selector_au).prop('selected', true);
+        {% endfor %}
+        let selector_t = '';
+        {% for t in a.tags.all %}
+        selector_t = 'select' + '#tags' + ' option[value="' + '{{ t.tag }}' + '"]';
+        $(selector_t).prop('selected', true);
+        {% endfor %}
+        let selector_c = '';
+        {% for c in a.categories.all %}
+        selector_c = 'select' + '#categories' + ' option[value="' + '{{ c.category }}' + '"]';
+        $(selector_c).prop('selected', true);
+        {% endfor %}
+    });
+</script>
+<script type="text/javascript" src="/static/js/online_edit.js" charset="UTF-8"></script>
+{% endblock %}
